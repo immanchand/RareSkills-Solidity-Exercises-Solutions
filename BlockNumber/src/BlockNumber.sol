@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: BUSL-1.1
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
 contract BlockNumber {
@@ -10,8 +10,12 @@ contract BlockNumber {
      */
 
     address public lastCaller;
+    uint256 public lastBlockNumber;
 
     function callMe() external {
         /// your code here
+        require(lastBlockNumber<block.number, "Already called in this block");
+        lastBlockNumber=block.number;
+        lastCaller=msg.sender;
     }
 }
