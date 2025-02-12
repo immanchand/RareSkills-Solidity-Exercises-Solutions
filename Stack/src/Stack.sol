@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: BUSL-1.1
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
 contract Stack {
@@ -20,6 +20,25 @@ contract Stack {
     constructor(uint256[] memory _stack) {
         stack = _stack;
     }
-
+    function push(uint256 newValue) public{
+        stack.push(newValue);
+    }
+    function peek() public view returns(uint256 lastElement){
+        require(stack.length > 0, "The stack is empty");
+        return stack[stack.length-1];
+    }
+    function pop() public returns(uint256 lastElement){
+        require(stack.length > 0, "The stack is empty");
+        lastElement = stack[stack.length-1];
+        stack.pop();
+        return lastElement;
+        
+    }
+    function size() public view returns(uint256 length){
+        return stack.length;
+    }
+    function getStack() public view returns(uint256[] memory){
+        return stack;
+    }
     // your code here
 }

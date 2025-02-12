@@ -14,6 +14,8 @@ contract TimelockEscrow {
         seller = msg.sender;
     }
 
+    mapping(address => uint256) public escrows;
+    mapping(address => uint256) public prices;
     
     /**
      * creates a buy order between msg.sender and seller
@@ -22,6 +24,9 @@ contract TimelockEscrow {
      */
     function createBuyOrder() external payable {
         // your code here
+        require(escrows[msg.sender]==0 || escrows[msg.sender]<block.timestamp, "active escrow exists");
+        escrows[msg.sender] = block.timestamp+3 days;
+        prices[msg.sender] = msg.value;
     }
 
     /**
@@ -29,6 +34,13 @@ contract TimelockEscrow {
      */
     function sellerWithdraw(address buyer) external {
         // your code here
+        require(escrows[buyer]<block.timestamp, "escrow time hasnt elapsed");
+        require(escrows[buyer]!=0, "escrow doesnt exist for this buyer");
+        require(msg.sender==seller, "You are not the seller");
+        escrows[msg.sender]=0;
+       // seller.call{value: price[buyer]}("");
+        payable(seller).transfer(prices[buyer]);
+        prices[buyer]=0;
     }
 
     /**
@@ -36,10 +48,17 @@ contract TimelockEscrow {
      */
     function buyerWithdraw() external {
         // your code here
+        require(escrows[msg.sender]!=0, "escrow doesnt exist for this buyer");
+        require(escrows[msg.sender]>block.timestamp, "escrow time has already elapsed");
+        escrows[msg.sender]=0;
+       // seller.call{value: price[buyer]}("");
+        payable(msg.sender).transfer(prices[msg.sender]);
+        prices[msg.sender]=0;
     }
 
     // returns the escrowed amount of @param buyer
     function buyerDeposit(address buyer) external view returns (uint256) {
         // your code here
+        return prices[buyer];
     }
 }

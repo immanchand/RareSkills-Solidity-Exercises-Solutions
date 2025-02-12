@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: BUSL-1.1
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
 // You may not modify this contract
@@ -20,4 +20,7 @@ contract Super is HelloWorld {
     }
 
     // your code here
+    function getGreetings() public pure returns (string memory) {
+        return super.greetings();
+    }
 }
