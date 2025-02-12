@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: BUSL-1.1
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
 contract WhoCalledMe {
@@ -7,5 +7,6 @@ contract WhoCalledMe {
     function callMe() public {
         // use msg.sender to store the address
         // of the person who called this contract
+        caller = msg.sender;
     }
 }

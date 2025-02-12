@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: BUSL-1.1
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
 contract Tupledore {
@@ -12,4 +12,20 @@ contract Tupledore {
         4. Create a function called `returnTuple`, 
            that returns `userInfo` (as a tuple)
     */
+
+    struct UserInfo{
+        address _address;
+        uint256 _number;
+        }
+
+    UserInfo userInfo;
+
+    function setTuple(address _add, uint256 _num) public {
+        userInfo._address =_add;
+        userInfo._number =_num;
+    }
+
+    function returnTuple() public view returns(address, uint256) {
+        return (userInfo._address, userInfo._number);
+    }
 }
