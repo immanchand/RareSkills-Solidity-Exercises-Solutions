@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: BUSL-1.1
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
 contract NotEnough {
@@ -7,5 +7,6 @@ contract NotEnough {
     else it reverts. */
     function largeEnough(uint256 _number) external pure {
         // add code here
+        require(_number>10, "number must be greater than 10");
     }
 }

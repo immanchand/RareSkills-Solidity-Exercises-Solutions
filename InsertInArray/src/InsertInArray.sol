@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: BUSL-1.1
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
 contract InsertInArray {
@@ -9,5 +9,10 @@ contract InsertInArray {
      */
     function replaceAtIndex(uint256 index, uint256 newValue) public {
         // your code here
+        arr[index]=newValue;
+    }
+
+    function getFullArray() public view returns (uint256[10] memory){
+        return arr;
     }
 }

@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: BUSL-1.1
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
 
 /*
     This exercise assumes you know how to declare immutable variables.
@@ -7,9 +7,13 @@ pragma solidity ^0.8.13;
 */
 
 contract ContractImmutable {
-    uint256 public value;
+    uint256 immutable public value = 20;
 
     constructor(uint256 _value) {
         value = _value;
+    }
+
+    function dummy() public {
+        //value = 42; // This should fail.
     }
 }

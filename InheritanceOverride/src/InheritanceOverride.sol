@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: BUSL-1.1
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
 // You may not modify this contract
@@ -14,7 +14,9 @@ contract InheritanceOverride is Number {
         1. Override `getNumber` function in the parent contract.
         2. `getNumber` function should return uint 10.
     */
-    
     // prettier-ignore
     // your code here
+    function getNumber() public pure override returns (uint256){
+        return 10;
+    }
 }
