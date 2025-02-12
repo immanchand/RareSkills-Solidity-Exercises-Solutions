@@ -15,7 +15,6 @@ contract IdiotBettingGame {
     uint256 public winningAmount;
     uint256 public endTime;
     address public winningAddress;
-dummy line;
     
     function bet() public payable {
         // your code here
