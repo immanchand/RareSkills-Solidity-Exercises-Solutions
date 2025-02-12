@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: BUSL-1.1
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
 contract CrossContract {
@@ -9,8 +9,17 @@ contract CrossContract {
     function getLowerPrice(
         address _priceOracle1,
         address _priceOracle2
-    ) external view returns (uint256) {
+    ) external returns (uint256) {
         // your code here
+        (bool ok1, bytes memory result1) = _priceOracle1.call(abi.encodeWithSignature("price()"));
+        require(ok1, "Oracle 1 call failed");
+        (bool ok2, bytes memory result2) = _priceOracle2.call(abi.encodeWithSignature("price()"));
+        require(ok2, "Oracle 2 call failed");
+        uint256 o1price = abi.decode(result1, (uint256));
+        uint256 o2price = abi.decode(result2, (uint256));
+        if(o1price<=o2price)
+            return o1price;
+        return o2price;
     }
 }
 

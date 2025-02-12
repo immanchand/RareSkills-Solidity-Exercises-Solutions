@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: BUSL-1.1
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
 contract Decoder {
@@ -10,6 +10,8 @@ contract Decoder {
 
     function decodeData(
         bytes memory _data
-    ) public pure returns (string memory, uint256) {}
-}
+    ) public pure returns (string memory, uint256) {
 
+       return abi.decode(_data, (string, uint256));
+    }
+}

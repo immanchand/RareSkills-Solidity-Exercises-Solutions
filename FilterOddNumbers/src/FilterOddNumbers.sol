@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: BUSL-1.1
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.12;
 
 contract FilterOddNumbers {
     /*
@@ -12,9 +12,24 @@ contract FilterOddNumbers {
 
     function filterOdd(uint256[] memory _arr)
         public
-        view
+        pure
         returns (uint256[] memory)
     {
-        // your code here
+        uint256 lengthCount =0;
+        
+        for(uint256 i=0;i<_arr.length;i++){
+            if(_arr[i]%2==0)
+            lengthCount++;
+        }
+        uint256[] memory evenNumbers = new uint256[](lengthCount);
+        uint256 eveni = 0;
+
+        for(uint256 i=0;i<_arr.length;i++){
+            if(_arr[i]%2==0){
+                evenNumbers[eveni] = _arr[i];
+                eveni++;
+            }       
+        }
+        return evenNumbers;
     }
 }

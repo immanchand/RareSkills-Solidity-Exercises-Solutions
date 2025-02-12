@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: BUSL-1.1
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
 contract Fibonacci {
     /*
@@ -11,7 +11,17 @@ contract Fibonacci {
         calling fibonacci(6) would return 8, because the 6th Fibonacci number is 8.
     */
 
-    function fibonacci(uint256 _position) public view returns (uint256) {
+    function fibonacci(uint256 _position) public pure returns (uint256) {
         // your code here
+        uint256 fibnum = 0;
+        uint256 fibnumback = 1;
+        uint256 temp;
+        for(uint256 i = 1; i <= _position ; i++){
+            
+            temp = fibnum;
+            fibnum = fibnum + fibnumback;
+            fibnumback = temp;
+        }
+        return fibnum;
     }
 }

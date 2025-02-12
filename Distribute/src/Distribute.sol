@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: BUSL-1.1
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
 contract Distribute {
@@ -13,5 +13,11 @@ contract Distribute {
 
     function distributeEther(address[] memory addresses) public {
         // your code here
+        uint256 count = addresses.length;
+        uint256 share = (address(this).balance)/count;
+       
+        for(uint256 i=0;i<addresses.length;i++){
+            addresses[i].call{value: share}("");
+        }
     }
 }

@@ -1,7 +1,7 @@
-// SPDX-License-Identifier: BUSL-1.1
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-contract Divide {
+contract Divide{
     uint256 public constant PERCENTAGE_INTEREST = 3;
 
     /**
@@ -10,7 +10,7 @@ contract Divide {
      */
 
     function calculateInterest(uint256 amount) external pure returns (uint256) {
-        uint256 x = (PERCENTAGE_INTEREST / 100) * amount;
+        uint256 x = (PERCENTAGE_INTEREST * amount) / 100;
         return x;
     }
 }
