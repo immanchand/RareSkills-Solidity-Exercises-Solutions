@@ -3,6 +3,8 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
 import "../src/TokenExchange.sol";
+//import "../src/RareCoin.sol";
+//import "../src/SkillCoin.sol";
 
 contract TokenExchangeTest is Test {
     SkillsCoin public skillsCoin;

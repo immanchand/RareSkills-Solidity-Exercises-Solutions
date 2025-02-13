@@ -5,7 +5,9 @@ pragma solidity ^0.8.13;
     Run the following command to install the oz contracts:
     forge install OpenZeppelin/openzeppelin-contracts --no-commit 
 */
-import "../src/ERC20.sol";
+//import "../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+//import "./RareCoin.sol";
+//import "./SkillCoin.sol";
 
 /*
 Build two ERC20 contracts: RareCoin and SkillsCoin (you can change the name if you like).
@@ -21,28 +23,92 @@ Here is the workflow:
 Remember ERC20 tokens(aka contract) can own other ERC20 tokens. So when you call RareCoin.trade(), it should call SkillsCoin.transferFrom and transfer your SkillsCoin to itself, I.e. address(this).
 */
 
-contract SkillsCoin is ERC20 {
-    constructor(string memory _name, string memory _symbol) ERC20(_name, _symbol) {}
+contract SkillsCoin {
+    address public owner;
+    string public name;
+    string public symbol;
+    uint8 public decimal;
+    uint256 public totalSupply;
+    mapping(address=>uint256) public balanceOf;
+    mapping(address=>mapping(address=>uint256)) public approvals;
 
-    // Mint to the caller
-    function mint(uint256 amount) public {
-        // your code here
+    constructor(string memory _name, string memory _symbol){
+        name = _name;
+        symbol = _symbol;
+        //decimal = _decimal;
+        owner = msg.sender;
+        totalSupply = 0;
+    }
+
+    function mint(uint amount) public returns(bool){
+        balanceOf[msg.sender] += amount;
+        totalSupply += amount;
+        return true;
+    }
+    function approve(address spender, uint256 amount) public returns(bool){
+        approvals[msg.sender][spender] = amount;
+        return true;
+    }
+    function transferFunction(address from, address to, uint256 amount) private returns(bool){
+        require(balanceOf[from]>=amount,"current balance is insufficient to transfer");
+        balanceOf[from] -= amount;
+        balanceOf[to] += amount;
+        return true;
+    }
+    function transfer(address to, uint256 amount) public returns(bool){
+        return transferFunction(msg.sender, to, amount);
+    }
+    function transferFrom(address from, address to, uint256 amount) public returns(bool){
+        if(msg.sender!=from)
+            require(approvals[from][msg.sender] >=amount,"approval amount insufficient to transfer");
+        return transferFunction(from, to, amount);    
     }
 }
 
-contract RareCoin is ERC20 {
-    SkillsCoin skillsCoin;
+contract RareCoin {
+    address public owner;
+    string public name;
+    string public symbol;
+    address public source; 
+    uint8 public decimal;
+    uint256 public totalSuply;
+    mapping(address=>uint256) public balanceOf;
+    mapping(address=>mapping(address=>uint256)) public approvals;
 
-    constructor(string memory _name, string memory _symbol, address _skillsCoin) ERC20(_name, _symbol) {
-        skillsCoin = SkillsCoin(_skillsCoin);
+    constructor(string memory _name, string memory _symbol, address _source){
+        name = _name;
+        symbol = _symbol;
+        //decimal = _decimal;
+        source = _source;
+        owner = msg.sender;
     }
-
-    function trade(uint256 amount) public {
-        // some code
-        // you can pass the address of the deployed SkillsCoin contract as a parameter to the constructor of the RareCoin contract as 'source'
-        // (bool ok, bytes memory result) = source.call(abi.encodeWithSignature("transferFrom(address,address,uint256)", msg.sender, address(this), amount));
-        // this will fail if there is insufficient approval or balance
-        // require(ok, "call failed");
-        // more code
+    function mint() public pure returns(bool){
+        require(false,"coins can only be minted by trading Skill coin for Rare coin");
+        return true;
+    }
+    function approve(address spender, uint256 amount) public returns(bool){
+        approvals[msg.sender][spender] = amount;
+        return true;
+    }
+    function transferFunction(address from, address to, uint256 amount) private returns(bool){
+        require(balanceOf[from]>=amount,"insufficnet balance to transfer");
+        balanceOf[from]-=amount;
+        balanceOf[to]+=amount;
+        return true;
+    }
+    function transfer(address to, uint256 amount) public returns(bool){
+        return transferFunction(msg.sender, to, amount);
+    }
+    function transferFrom(address from, address to, uint256 amount) public returns(bool){
+        if(msg.sender!=from)
+            require(approvals[from][msg.sender] >=amount,"insufficient approval to transfer");
+        return transferFunction(from, to, amount);
+    }
+    function trade(uint256 amount) public returns(bool){
+        (bool ok, bytes memory result) = source.call(abi.encodeWithSignature("transferFrom(address,address,uint256)",msg.sender,address(this),amount));
+        require(ok,"transfer from Skill coin failed");
+        totalSuply += amount;
+        balanceOf[msg.sender] += amount;
+        return abi.decode(result, (bool));
     }
 }
