@@ -5,7 +5,7 @@ pragma solidity ^0.8.13;
     Run the following command to install the oz contracts:
     forge install OpenZeppelin/openzeppelin-contracts --no-commit 
 */
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "../src/ERC20.sol";
 
 /*
 Build two ERC20 contracts: RareCoin and SkillsCoin (you can change the name if you like).
