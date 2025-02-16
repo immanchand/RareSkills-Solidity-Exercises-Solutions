@@ -1,5 +1,6 @@
-// SPDX-License-Identifier: BUSL-1.1
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.28;
+
 
 contract StudentDB {
     /* This exercise assumes you know how structs works.
@@ -11,7 +12,7 @@ contract StudentDB {
         uint256 age;
     }
 
-    Student student;
+    Student public myStudent;
 
     constructor() {
         createStudent("John", 12);
@@ -20,10 +21,12 @@ contract StudentDB {
     // create Student's data
     function createStudent(string memory _name, uint256 _age) public {
         // your code here
+        myStudent = Student(_name,_age);
     }
 
     // return struct data
     function getEntireStruct() public view returns (Student memory) {
         // your code here
+        return myStudent;
     }
 }
